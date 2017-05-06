@@ -45,13 +45,23 @@ function FitCubSpline(K)
         end
     end
     
-    % get beta 
+    xTranspose = X.'; 
+    beta = (xTranspose * y)\(xTranspose * X);
+    beta = beta.';
     
-    beta = ((X.').*X);
+    fx = zeros(length(x),1);
+    for i =1: length(x)
+        for j = 1: length(beta)
+            if j<5
+                fx(i,1) = fx(i,1) + beta(j,1)*(x(i,1).^(j-1));
+            else
+                fx(i,1) = fx(i,1) + beta(j,1)*((x(i,1)-c(1,j-4)).^(3));
+            end
+        end
+    end 
     
-    %^(-1)).*y;
-    
-    
+    plot(x,fx.','r--','linewidth',2);hold on; grid on;  % sin(5x)
+
     disp('end');
 end
     
